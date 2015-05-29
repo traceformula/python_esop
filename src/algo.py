@@ -92,8 +92,10 @@ class KM4:
         for i in range (len (map_input)):
             if map_input[i] == '0':
                 sequence[self.input2sequence[i]] = '0'
-            else:
+            elif map_input[i] == '1':
                 sequence[self.input2sequence[i]] = '1'
+            else:
+                sequence[self.input2sequence[i]] = '3' #don't care characters
         return ''.join(sequence)
 
     def mapsequence2input(self, map_sequence):

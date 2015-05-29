@@ -161,7 +161,7 @@ class KMapView(tk.Frame):
         map_input_array = "".join(txt.split())
 
         for t in map_input_array:
-            if not (t == '0' or t == '1'):
+            if not (t == '0' or t == '1' or t == 'x'):
                 return False
 
         l = len(map_input_array)
@@ -195,6 +195,7 @@ class KMapView(tk.Frame):
     def create_map_buttons(self, w, h):
 
         self.map_input_array = self.algo.input2mapsequence(self.map_input_array)
+
         if(self.map_buttons is not None):
             for i in range(len(self.map_buttons)):
                 for j in range(len(self.map_buttons[i])):
@@ -214,9 +215,9 @@ class KMapView(tk.Frame):
             row_buttons = []
             for i in range(w):
                 t = self.map_input_array[j*w + i]
-                self.values_of_buttons[j][i] = int(t)
+                self.values_of_buttons[j][i] = special_char_to_int(t)
                 f = lambda w=i,h=j:self.map_button_clicked(w,h)
-                b = tk.Button(self, text = t, command = f, bg="#ffc000", state='disabled') 
+                b = tk.Button(self, text = int_to_char_to_display(int(t)), command = f, bg="#ffc000", state='disabled') 
                 b.grid(row=1, column=1)
                 b.config(width=6, height=3)
                 b.place(x=(left + config.MAP_BUTTON_W * i), y=(top + config.MAP_BUTTON_H*j))

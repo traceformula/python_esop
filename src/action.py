@@ -76,9 +76,11 @@ class FlipAction(Action):
                 self.values.append((w,h, self.context.values_of_buttons[h][w]))
                 if self.context.values_of_buttons[h][w] == 0:
                     self.context.values_of_buttons[h][w] = 1
-                else:
+                elif self.context.values_of_buttons[h][w]  == 1:
                     self.context.values_of_buttons[h][w] = 0
-                self.context.map_buttons[h][w]['text'] = str(self.context.values_of_buttons[h][w])
+                else: #case of don't care
+                    self.context.values_of_buttons[h][w] = 3
+                self.context.map_buttons[h][w]['text'] = int_to_char_to_display(self.context.values_of_buttons[h][w])
 
                 self.context.selected_buttons[h][w] = 0
                 self.context.map_buttons[h][w].config(bg="#ffc000")
@@ -95,7 +97,7 @@ class FlipAction(Action):
         for i in range(len(self.values)):
             v = self.values[i]
             self.context.values_of_buttons[v[1]][v[0]] = v[2]
-            self.context.map_buttons[v[1]][v[0]]['text'] = str(v[2])
+            self.context.map_buttons[v[1]][v[0]]['text'] = int_to_char_to_display(int(v[2]))
             self.context.selected_buttons[v[1]][v[0]] = 1
             self.context.map_buttons[v[1]][v[0]].config(bg="#c0ff00")
 
