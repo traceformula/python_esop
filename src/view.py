@@ -27,8 +27,9 @@ class KMapView(tk.Frame):
         self.initUI()
         self.centerWindow()
 
-    def initParams(self):
-        self.map_buttons = None
+    def initParams(self, reset_map=False):
+        if reset_map:
+            self.map_buttons = None
         self.map_input = None
         self.selected_buttons = None
         self.algo = None
@@ -37,8 +38,8 @@ class KMapView(tk.Frame):
         self.map_w = 0
         self.map_h = 0
 
-    def reset(self):
-        self.initParams()
+    def reset(self, reset_map = False):
+        self.initParams(reset_map)
         self.select_boxes_button.config(state='disabled')
         self.undo_button.config(state='disabled')
         self.flip_bits_button.config(state='disabled')
@@ -62,16 +63,10 @@ class KMapView(tk.Frame):
         self.flip_bits_button.place(x=(config.INITIAL_WIDTH/2 + config.SPACE_1), y=50 + config.SPACE_1)
         self.flip_bits_button.config(state='disabled')
 
-        #display output button
-        self.display_output_button = tk.Button(self,text="Display output with",command=self.foo,bg="#ffc000")
-        self.display_output_button.grid(row = 4, column = 2, sticky = 'S')
-        self.display_output_button.place(x=(config.INITIAL_WIDTH/2 + config.SPACE_1), y=100 + config.SPACE_1)
-        self.display_output_button.config(state='disabled')
-
         #output to a file
         self.file_output_button = tk.Button(self,text="Ouput to a file",command=self.file_output,bg="#ffc000")
         self.file_output_button.grid(row = 4, column = 2, sticky = 'S')
-        self.file_output_button.place(x=(config.INITIAL_WIDTH/2 + config.SPACE_1 + 150), y=100 + config.SPACE_1)
+        self.file_output_button.place(x=(config.INITIAL_WIDTH/2 + config.SPACE_1), y=100 + config.SPACE_1)
         self.file_output_button.config(state='disabled')
 
         #Undo
@@ -148,7 +143,7 @@ class KMapView(tk.Frame):
 
     def insert_map(self):
 
-        self.reset()
+        self.reset(reset_map=False)
 
         self.map_input = self.entry.get().strip()
         if(self.validate_map_input(self.map_input)):
@@ -182,9 +177,8 @@ class KMapView(tk.Frame):
             self.algo = KM4()
             self.create_map_buttons(4,4)
         elif l == 32:
-            #TODO
-            #pprint("TODO")
-            self.create_map_buttons(8,4)
+            self.algo = KM5()
+            self.create_map_buttons(4,8)
         elif l == 64:
             pprint("TODO")
         elif l == 128:
@@ -196,10 +190,11 @@ class KMapView(tk.Frame):
 
         self.map_input_array = self.algo.input2mapsequence(self.map_input_array)
 
-        if(self.map_buttons is not None):
+        if(self.map_buttons != None):
             for i in range(len(self.map_buttons)):
                 for j in range(len(self.map_buttons[i])):
                     self.map_buttons[i][j].destroy()
+
         self.map_buttons = None
 
         self.map_w = w
@@ -226,7 +221,6 @@ class KMapView(tk.Frame):
             self.map_buttons.append(row_buttons)
 
 
-        self.display_output_button.config(state='normal')
         self.file_output_button.config(state='normal')
 
     def map_button_clicked(self, w, h):
