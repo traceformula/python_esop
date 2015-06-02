@@ -38,11 +38,10 @@ class KM4:
         c = len(elements)
         if c == self.L: return "1"
         
-        if not (c == 1 or c == 2 or c == 4 or c == 8):
+        if not (c == 1 or c == 2 or c == 4 or c == 8 or c==16 or c==32):
             return False
         
         special_codes = [self.special_code[i/self.W][i%self.W] for i in elements]
-        print elements, special_codes
         
         for i in range(c):
             #code = [[c for c in self.special_code[elem]] for elm in elements]
@@ -130,3 +129,67 @@ class KM5(KM4):
         self.W = 4  #width
         self.H = 8  #height
         self.L = 32 #number of inputs
+
+class KM6(KM4):
+    '''
+    Karnaugh Map of 6
+    '''
+    def __init__(self):
+        self.special_code = [
+        ['000000', '000001', '000011', '000010', '010000', '010001', '010011', '010010'], 
+        ['000100', '000101', '000111', '000110', '010100', '010101', '010111', '010110'], 
+        ['001100', '001101', '001111', '001110', '011100', '011101', '011111', '011110'],
+        ['001000', '001001', '001011', '001010', '011000', '011001', '011011', '011010'], 
+        ['100000', '100001', '100011', '100010', '110000', '110001', '110011', '110010'], 
+        ['100100', '100101', '100111', '100110', '110100', '110101', '110111', '110110'], 
+        ['101100', '101101', '101111', '101110', '111100', '111101', '111111', '111110'], 
+        ['101000', '101001', '101011', '101010', '111000', '111001', '111011', '111010']
+        ]
+        self.chars = ['a', 'b', 'c', 'd', 'e', 'f']
+        self.input2sequence = [0, 1, 3, 2, 8, 9, 11, 10, 24, 25, 27, 26, 16, 17, 19, 18, \
+                               4, 5, 7, 6, 12, 13, 15, 14, 28, 29, 31, 30, 20, 21, 23, 22, \
+                               32, 33, 35, 34, 40, 41,43, 42, 56, 57, 59, 58, 48, 49, 51, 50, \
+                               36, 37, 39, 38, 44, 45, 47, 46, 60, 61, 63, 62, 52, 53, 55, 54]
+        self.NE = 6 #number of types - chars' length
+        self.W = 8  #width
+        self.H = 8  #height
+        self.L = 64 #number of inputs
+
+def convert1(s2i):
+    arr = [0] * len(s2i)
+    for i in range(len(s2i)):
+        arr[s2i[i]] = i
+    return arr
+def pad(a, l, p='0'):
+    if len(a) < l:
+        for i in range(l-len(a)):
+            a = p + str(a)
+    return a
+
+if __name__ == "__main__":
+
+    #TEST DATA
+
+    s2i1 = [0, 1, 3, 2, 16, 17, 19, 18, 4, 5, 7, 6, 20, 21, 23, 22, \
+        12, 13, 15, 14, 28, 29, 31, 30, 8, 9, 11, 10, 24, 25, 27, 26,\
+        32, 33, 35, 34, 48, 49, 51, 50, 36, 37, 39, 38, 52, 53, 55, 54,
+        44, 45, 47, 46, 60, 61, 63, 62, 40, 41, 43, 42, 56, 57, 59, 58]
+
+    print convert1(s2i1)
+
+    w = 8
+    h = 8
+
+    arr = []
+    for i in range(h):
+        a = []
+        for j in range(w):
+            b = bin(s2i1[i*w+j])
+            a.append(pad(b[2:], 6))
+        arr.append(a)
+
+    print arr
+
+
+
+

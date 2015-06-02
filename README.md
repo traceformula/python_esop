@@ -12,3 +12,4 @@ http://tkinter.unpythonic.net/wiki/How_to_install_Tkinter<br/>
 <br/><br/><br/>
 ![alt tag](https://github.com/traceformula/python_esop/blob/master/static/img/44kmap.jpg) <br/>
 ![] (https://github.com/traceformula/python_esop/blob/master/static/img/KM5.jpg) <br/>
+![] (https://github.com/traceformula/python_esop/blob/master/static/img/KM6.jpg) <br/>

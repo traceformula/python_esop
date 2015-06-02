@@ -17,6 +17,7 @@ class KMapView(tk.Frame):
         self.parent = parent
         self.state = 'START'
         self.map_buttons = None
+        self.input_labels = None
         self.selected_buttons = None
         self.algo = None
         self.action_count = 0
@@ -30,6 +31,7 @@ class KMapView(tk.Frame):
     def initParams(self, reset_map=False):
         if reset_map:
             self.map_buttons = None
+            self.input_labels = None
         self.map_input = None
         self.selected_buttons = None
         self.algo = None
@@ -39,11 +41,18 @@ class KMapView(tk.Frame):
         self.map_h = 0
 
     def reset(self, reset_map = False):
-        self.initParams(reset_map)
+        
         self.select_boxes_button.config(state='disabled')
         self.undo_button.config(state='disabled')
         self.flip_bits_button.config(state='disabled')
         tk_entry_text(self.output, "")
+
+        if(self.input_labels != None):
+            for i in range(len(self.input_labels)):
+                for j in range(len(self.input_labels[0])):
+                    self.input_labels[i][j].destroy()
+
+        self.initParams(reset_map)
 
     def initUI(self):
         self.parent.title = "Karnaugh Map Editor"
@@ -180,7 +189,8 @@ class KMapView(tk.Frame):
             self.algo = KM5()
             self.create_map_buttons(4,8)
         elif l == 64:
-            pprint("TODO")
+            self.algo = KM6()
+            self.create_map_buttons(8, 8)
         elif l == 128:
             pprint("TODO")
         else:
@@ -220,8 +230,19 @@ class KMapView(tk.Frame):
                 row_buttons.append(b)
             self.map_buttons.append(row_buttons)
 
+        self.input_labels = []
 
-        self.file_output_button.config(state='normal')
+        #using convert1 of algo
+        arr = convert1(self.algo.input2sequence)
+        for j in range(h):
+            row_labels = []
+            for i in range(w):
+                label = tk.Label(self, text=str(arr[j*w+i]))
+                label.grid(row=0, columnspan=4, sticky=tk.W+tk.E)
+                label.place(x=(left + config.MAP_BUTTON_W * i), y=(top + config.MAP_BUTTON_H*j))
+                row_labels.append(label)
+
+            self.input_labels.append(row_labels)
 
     def map_button_clicked(self, w, h):
         pprint("map_button_clicked", w, h)
